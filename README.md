@@ -1,122 +1,158 @@
-<div align="center">
-  <img src="public/image/sijasta-logo.svg" alt="SIJASTA logo" width="110">
+# SIJASTA — Transaction Management System
 
-# SIJASTA Transaction Management System
+<p align="center">
+  <strong>A role-based transaction, inventory, stock, and reporting application built with Laravel 10 and MySQL.</strong>
+</p>
 
-A role-based transaction, inventory, stock, and reporting application built with Laravel 10 and MySQL.
-
-[![Laravel](https://img.shields.io/badge/Laravel-10-FF2D20?logo=laravel&logoColor=white)](https://laravel.com)
-[![PHP](https://img.shields.io/badge/PHP-%5E8.1-777BB4?logo=php&logoColor=white)](https://www.php.net)
-[![MySQL](https://img.shields.io/badge/MySQL-Database-4479A1?logo=mysql&logoColor=white)](https://www.mysql.com)
-[![Tests](https://github.com/sulthanrhnn/sijasta-transaction-management/actions/workflows/tests.yml/badge.svg)](https://github.com/sulthanrhnn/sijasta-transaction-management/actions/workflows/tests.yml)
-
-</div>
+<p align="center">
+  <a href="https://github.com/sulthanrhnn/sijasta-transaction-management/actions/workflows/tests.yml">
+    <img src="https://github.com/sulthanrhnn/sijasta-transaction-management/actions/workflows/tests.yml/badge.svg" alt="Tests">
+  </a>
+  <img src="https://img.shields.io/badge/Laravel-10-FF2D20?logo=laravel&logoColor=white" alt="Laravel 10">
+  <img src="https://img.shields.io/badge/PHP-8.1%2B-777BB4?logo=php&logoColor=white" alt="PHP 8.1+">
+  <img src="https://img.shields.io/badge/MySQL-8%2B-4479A1?logo=mysql&logoColor=white" alt="MySQL">
+  <img src="https://img.shields.io/badge/License-MIT-green" alt="MIT License">
+</p>
 
 ## Overview
 
-SIJASTA is a web application for managing products, stock, partners, transactions, payment proofs, transaction status history, receipts, and period-based reports. The system separates access for administrators, assistants, and partners.
+SIJASTA is a portfolio demonstration of a web-based transaction and inventory management system. It supports separate workflows for administrators, assistants, and business partners while maintaining product stock, transaction status history, payment evidence, and printable reports.
 
-This repository is a **sanitized portfolio edition**. Real operational records, credentials, uploaded payment proofs, personal data, company account details, and private configuration have been removed or replaced with dummy data.
+This public version uses **dummy data only** and has been sanitized for portfolio use.
+
+## Application Preview
+
+### Admin Dashboard
+
+<p align="center">
+  <img src="docs/screenshots/admin-dashboard.png" alt="SIJASTA admin dashboard" width="100%">
+</p>
+
+<table>
+  <tr>
+    <td width="50%" align="center"><strong>Login</strong></td>
+    <td width="50%" align="center"><strong>Product Management</strong></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/login.png" alt="Login page"></td>
+    <td><img src="docs/screenshots/product-management.png" alt="Product management page"></td>
+  </tr>
+  <tr>
+    <td width="50%" align="center"><strong>Partner Dashboard</strong></td>
+    <td width="50%" align="center"><strong>Transaction Management</strong></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/partner-dashboard.png" alt="Partner dashboard"></td>
+    <td><img src="docs/screenshots/transaction-management.png" alt="Transaction management page"></td>
+  </tr>
+  <tr>
+    <td width="50%" align="center"><strong>Partner Transaction History</strong></td>
+    <td width="50%" align="center"><strong>Printable Receipt</strong></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/partner-transactions.png" alt="Partner transaction history"></td>
+    <td><img src="docs/screenshots/receipt.png" alt="Printable transaction receipt"></td>
+  </tr>
+</table>
 
 ## Main Features
 
-- Authentication and session management
-- Role-based route protection
-- User and partner management
-- Product and stock management
-- Stock adjustment history
-- Partner ordering workflow
-- Transaction status workflow: `pending`, `diproses`, `selesai`, and `ditolak`
-- Automatic stock reservation and restoration
-- Payment-proof upload validation
-- Transaction status audit log
-- Date-range filtering
-- PDF transaction reports
-- Thermal receipt generation
-- Responsive partner-facing pages
-- Dummy seed data and demonstration accounts
-- Automated feature tests through GitHub Actions
+- Role-based authentication and authorization for **Admin**, **Assistant**, and **Partner** users.
+- User and partner account management.
+- Product, price, image, and stock management.
+- Stock-change history with the responsible user and before/after quantities.
+- Partner product catalogue, search, ordering, and transaction history.
+- Automatic stock reservation when products are added to a transaction.
+- Stock restoration when an item is removed or a transaction is rejected.
+- Transaction statuses: `pending`, `diproses`, `selesai`, and `ditolak`.
+- Transaction status audit trail with actor and timestamp.
+- Private payment-proof storage with authorization checks.
+- Date-range filtering and PDF transaction reports.
+- Printable thermal-style transaction receipts.
+- Pagination for operational tables.
+- Automated authentication and role-access tests with GitHub Actions.
 
 ## User Roles
 
 | Role | Main Access |
 |---|---|
-| **Admin** | Dashboard, users, partners, products, stock logs, transactions, reports |
-| **Assistant** | Dashboard, partners, products, stock logs, transactions, reports |
-| **Partner** | Product browsing, personal orders, payment upload, transaction history, receipts |
+| **Admin** | Dashboard, users, partners, products, stock logs, transactions, reports, and status updates |
+| **Assistant** | Dashboard, partners, products, stock logs, transactions, reports, and status updates |
+| **Partner** | Product catalogue, product search, ordering, payment-proof upload, transaction history, and receipts |
 
 ## Technology Stack
 
-- PHP 8.1+
-- Laravel 10
-- MySQL
-- Blade templates
-- Bootstrap and AdminLTE
-- JavaScript
-- DomPDF
-- PHPUnit
-- GitHub Actions
+| Area | Technology |
+|---|---|
+| Backend | PHP 8.1+, Laravel 10 |
+| Database | MySQL |
+| Frontend | Blade, Bootstrap, AdminLTE, JavaScript |
+| PDF | Laravel DomPDF |
+| Alerts | SweetAlert |
+| Testing | PHPUnit, Laravel HTTP tests |
+| CI | GitHub Actions |
 
-## Application Flow
+## Transaction Workflow
 
 ```mermaid
 flowchart LR
-    A[Partner logs in] --> B[Browse available products]
-    B --> C[Create pending transaction]
-    C --> D[Add products and quantities]
-    D --> E[Stock is reserved]
-    E --> F[Upload payment proof]
-    F --> G[Admin or assistant reviews transaction]
-    G -->|Approved| H[Processing]
-    H --> I[Completed]
-    G -->|Rejected| J[Rejected]
-    J --> K[Stock is restored]
-    I --> L[Receipt and report available]
+    A[Partner browses products] --> B[Creates transaction]
+    B --> C[Adds products and quantity]
+    C --> D[Stock is reserved]
+    D --> E[Uploads payment proof]
+    E --> F[Admin or Assistant reviews transaction]
+    F --> G{Status decision}
+    G -->|Diproses| H[Order processing]
+    H -->|Selesai| I[Revenue and completed transaction recorded]
+    G -->|Ditolak| J[Reserved stock restored]
 ```
 
 ## Simplified Data Model
 
 ```mermaid
 erDiagram
-    USERS ||--o{ TRANSACTIONS : creates
-    USERS ||--o{ STOCK_LOGS : records
-    PRODUCTS ||--o{ STOCK_LOGS : has
+    USERS ||--o{ TRANSAKSIS : creates
+    USERS ||--o{ KELOLA_STOKS : records
+    PRODUKS ||--o{ KELOLA_STOKS : has
 
     USERS {
-        bigint id PK
+        bigint id
         string name
         string email
         string password
         enum role
     }
 
-    PRODUCTS {
-        bigint id PK
+    PRODUKS {
+        bigint id
         string name
         bigint harga
         decimal stok
         string gambar
     }
 
-    TRANSACTIONS {
-        bigint id PK
-        bigint user_id FK
+    TRANSAKSIS {
+        bigint id
+        bigint user_id
         decimal total
         json items
         enum status
-        string payment_proof
-        json status_log
+        string bukti_pembayaran
+        json log_status
+        text keterangan
     }
 
-    STOCK_LOGS {
-        bigint id PK
-        bigint product_id FK
-        bigint user_id FK
-        decimal stock_before
-        decimal stock_after
-        decimal stock_change
+    KELOLA_STOKS {
+        bigint id
+        bigint produk_id
+        bigint user_id
+        decimal stok_sebelum
+        decimal stok_sesudah
+        string aktivitas
     }
 ```
+
+Transaction line items are stored as a JSON snapshot so historical product names, quantities, prices, and subtotals remain available even when the product catalogue changes.
 
 ## Local Installation
 
@@ -125,7 +161,7 @@ erDiagram
 - PHP 8.1 or newer
 - Composer
 - MySQL or MariaDB
-- PHP extensions required by Laravel, including PDO MySQL, Mbstring, OpenSSL, Fileinfo, and DOM
+- Required PHP extensions: `mbstring`, `fileinfo`, `pdo_mysql`, and `dom`
 
 ### Setup
 
@@ -133,25 +169,49 @@ erDiagram
 git clone https://github.com/sulthanrhnn/sijasta-transaction-management.git
 cd sijasta-transaction-management
 composer install
+```
+
+Create the environment file:
+
+**Windows PowerShell**
+
+```powershell
+Copy-Item .env.example .env
+```
+
+**Linux, macOS, or Git Bash**
+
+```bash
 cp .env.example .env
+```
+
+Generate the application key:
+
+```bash
 php artisan key:generate
 ```
 
-Create a MySQL database named `sijasta`, then update the database settings in `.env`:
+Create an empty MySQL database named:
+
+```text
+sijasta_portfolio
+```
+
+Update the database section in `.env`:
 
 ```env
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=sijasta
+DB_DATABASE=sijasta_portfolio
 DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-Run the database migration and seed dummy data:
+Run migrations and seed the demonstration data:
 
 ```bash
-php artisan migrate --seed
+php artisan migrate:fresh --seed
 ```
 
 Start the development server:
@@ -160,11 +220,11 @@ Start the development server:
 php artisan serve
 ```
 
-Open `http://127.0.0.1:8000`.
+Open `http://127.0.0.1:8000` in your browser.
 
-## Demonstration Accounts
+## Demo Accounts
 
-All accounts below use dummy data.
+All seeded accounts use dummy data.
 
 | Role | Email | Password |
 |---|---|---|
@@ -172,56 +232,57 @@ All accounts below use dummy data.
 | Assistant | `assistant@example.com` | `password` |
 | Partner | `partner@example.com` | `password` |
 
-Change these credentials before using the application outside a local demonstration environment.
-
-## Testing
-
-The test configuration uses an in-memory SQLite database.
+## Running Tests
 
 ```bash
 php artisan test
 ```
 
-The included GitHub Actions workflow runs the test suite automatically on pushes and pull requests to `main`.
+The repository also runs the test suite automatically on every push and pull request to `main` through GitHub Actions.
 
-## Repository Structure
+## Security Notes
+
+- `.env`, logs, sessions, caches, uploaded payment proofs, and local dependencies are excluded from Git.
+- Payment evidence is stored on Laravel's private local disk and served only after an authorization check.
+- Uploaded images are validated by MIME type and size.
+- Transaction ownership is checked before partners can view or modify a transaction.
+- Stock operations use database transactions and row locking to reduce race-condition risks.
+- Public demonstration credentials must never be reused in production.
+
+For vulnerability reports, see [SECURITY.md](SECURITY.md).
+
+## Project Structure
 
 ```text
-app/                    Application controllers, middleware, and models
-config/                 Laravel configuration
-database/migrations/    Database schema
-database/seeders/       Dummy demonstration data
-docs/                   Portfolio documentation and screenshot checklist
-public/                  Public assets and sanitized upload directories
+app/                    Controllers, middleware, models, and services
+database/               Migrations, factories, and demonstration seeders
+docs/screenshots/       Portfolio screenshots
+public/                  Public assets and application entry point
 resources/views/         Blade templates
-routes/                  Web and API routes
-tests/                   Feature and unit tests
+routes/web.php           Web routes and role-protected endpoints
+tests/                   Authentication and role-access tests
+.github/workflows/       Continuous-integration workflow
 ```
 
-## Security and Privacy
+## Portfolio Context
 
-- `.env` is excluded from Git.
-- Uploaded product images are excluded from Git, while payment proofs are stored in private application storage and served through an authorized route.
-- The included accounts and records are fictional demonstration data.
-- Real names, phone numbers, addresses, payment proofs, and bank details must not be committed.
-- See [SECURITY.md](SECURITY.md) for reporting guidance.
+This repository demonstrates practical experience with:
 
-## Portfolio Notes
-
-This project demonstrates practical experience with:
-
-- Laravel MVC architecture
+- Laravel MVC development
 - Relational database design
-- Authentication and authorization
-- Transaction-safe stock updates
-- Server-side validation
-- File uploads
-- PDF generation
-- Audit logs
-- Automated testing and CI
+- Role-based access control
+- Transaction and inventory workflows
+- Secure file handling
+- Reporting and PDF generation
+- Automated testing and continuous integration
+- Git and GitHub-based project documentation
 
 ## Author
 
 **M. Sultan Raihan Attalla**  
-Junior Web Developer / Software Engineer  
+Junior Web Developer & Software Engineer  
 GitHub: [@sulthanrhnn](https://github.com/sulthanrhnn)
+
+## License
+
+This project is available under the [MIT License](LICENSE). Third-party assets retain their original licenses as documented in [`THIRD_PARTY_LICENSES`](THIRD_PARTY_LICENSES/).

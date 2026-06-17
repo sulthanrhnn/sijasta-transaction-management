@@ -1,12 +1,13 @@
-# Screenshot Checklist
+# Application Screenshots
 
-After running the application locally, add the following screenshots to this directory:
+The images in this directory use demonstration accounts and dummy transaction data only.
 
-1. `login.png`
-2. `admin-dashboard.png`
-3. `product-management.png`
-4. `transaction-management.png`
-5. `partner-dashboard.png`
-6. `transaction-report.png`
-
-Use dummy data only. Do not show real names, phone numbers, addresses, account numbers, or payment proofs.
+| File | Screen |
+|---|---|
+| `login.png` | Authentication page |
+| `admin-dashboard.png` | Admin dashboard and operational summary |
+| `product-management.png` | Product, price, and stock management |
+| `transaction-management.png` | Administrative transaction review and status history |
+| `partner-dashboard.png` | Partner product catalogue |
+| `partner-transactions.png` | Partner transaction history |
+| `receipt.png` | Printable transaction receipt |
